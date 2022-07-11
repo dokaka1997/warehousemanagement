@@ -28,6 +28,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account register(RegisterRequest registerRequest) {
         Account account = new Account();
+        if (registerRequest.getId() != null) {
+            account.setId(registerRequest.getId());
+        }
         account.setEmail(registerRequest.getEmail());
         account.setFullName(registerRequest.getFullName());
         account.setPassword(registerRequest.getPassword());
