@@ -30,12 +30,12 @@ public class AccountController {
         return ResponseEntity.ok(accountService.register(registerRequest));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
         return ResponseEntity.ok(accountService.getAccountById(id));
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<Account> searchAccountByEmail(@PathVariable String email) {
         return ResponseEntity.ok(accountService.searchAccountByEmail(email));
     }
