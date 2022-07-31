@@ -62,7 +62,7 @@ public class ProductController {
     }
 
     @PostMapping("export")
-    public ResponseEntity<ExportProductRequest> exportProduct(@RequestBody ExportProductRequest exportProductRequests) {
+    public ResponseEntity<ExportProductRequest> exportProduct(@RequestBody ExportProductRequest exportProductRequests) throws Exception {
         return ResponseEntity.ok(productService.addNewExport(exportProductRequests));
     }
 }
