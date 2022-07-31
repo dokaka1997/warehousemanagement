@@ -7,6 +7,7 @@ import com.example.warehousemanagement.repository.BranchRepository;
 import com.example.warehousemanagement.repository.OrderRepository;
 import com.example.warehousemanagement.service.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -67,5 +68,16 @@ public class BranchServiceImpl implements BranchService {
         }
 
         return incomeBranchResponses;
+    }
+
+    @Override
+    public Branch addNewBranch(Branch branch) {
+        return branchRepository.save(branch);
+    }
+
+    @Override
+    public List<Branch> getAllBranch(int pageIndex, int pageSize, String name, boolean active) {
+        List<Branch> branches = branchRepository.findAllByNameContainingAndActiveIs(name, active, PageRequest.of(pageIndex, pageSize));
+        return branches;
     }
 }

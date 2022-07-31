@@ -6,14 +6,13 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "branch")
-public class Branch {
+@Table(name = "order_detail")
+public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
-    private String address;
-    private String phone;
-    private Boolean active;
-    private Long accountId;
+    private int quantity;
+    private double totalPrice;
+    private Long orderId;
+    private Long productId;
 }

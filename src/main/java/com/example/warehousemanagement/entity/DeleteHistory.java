@@ -3,17 +3,19 @@ package com.example.warehousemanagement.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Data
-@Table(name = "branch")
-public class Branch {
+@Table(name = "detele_history")
+public class DeleteHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
-    private String address;
-    private String phone;
-    private Boolean active;
-    private Long accountId;
+
+    private Long inventoryId;
+
+    private int quantity;
+
+    private Date deleteDate;
 }

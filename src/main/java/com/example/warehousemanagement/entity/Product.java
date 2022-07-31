@@ -22,8 +22,6 @@ public class Product {
 
     private Double price;
 
-    private int quantity;
-
     private int size;
 
     private String position;

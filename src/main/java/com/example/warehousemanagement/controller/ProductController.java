@@ -1,6 +1,9 @@
 package com.example.warehousemanagement.controller;
 
 import com.example.warehousemanagement.entity.Product;
+import com.example.warehousemanagement.model.request.ExportProductRequest;
+import com.example.warehousemanagement.model.response.BestProductSellingResponse;
+import com.example.warehousemanagement.service.OrderDetailService;
 import com.example.warehousemanagement.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +18,12 @@ public class ProductController {
 
     ProductService productService;
 
+    OrderDetailService orderDetailService;
+
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, OrderDetailService orderDetailService) {
         this.productService = productService;
+        this.orderDetailService = orderDetailService;
     }
 
     @PostMapping
@@ -48,5 +54,15 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.deleteProductById(id));
+    }
+
+    @GetMapping("best_selling")
+    public ResponseEntity<List<BestProductSellingResponse>> getTopSelling() {
+        return ResponseEntity.ok(orderDetailService.getTop10BestSellingProduct());
+    }
+
+    @PostMapping("export")
+    public ResponseEntity<ExportProductRequest> exportProduct(@RequestBody ExportProductRequest exportProductRequests) {
+        return ResponseEntity.ok(productService.addNewExport(exportProductRequests));
     }
 }

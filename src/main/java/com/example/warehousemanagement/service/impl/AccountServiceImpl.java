@@ -58,7 +58,14 @@ public class AccountServiceImpl implements AccountService {
         account.setRole(registerRequest.getRole());
         account.setImage(registerRequest.getImage());
         accountRepository.save(account);
-        return mapper.map(account, AccountResponse.class);
+        AccountResponse accountResponse;
+        accountResponse = mapper.map(account, AccountResponse.class);
+        Optional<Role> optionalRole = roleRepository.findById((long) account.getRole());
+        if (optionalRole.isPresent()) {
+            accountResponse.setRoleId(optionalRole.get().getId());
+            accountResponse.setRoleName(optionalRole.get().getName());
+        }
+        return accountResponse;
     }
 
     @Override
@@ -68,13 +75,26 @@ public class AccountServiceImpl implements AccountService {
             return null;
         }
         Account account = optionalAccount.get();
-        return mapper.map(account, AccountResponse.class);
+        AccountResponse accountResponse = mapper.map(account, AccountResponse.class);
+        Optional<Role> optionalRole = roleRepository.findById((long) account.getRole());
+        if (optionalRole.isPresent()) {
+            accountResponse.setRoleId(optionalRole.get().getId());
+            accountResponse.setRoleName(optionalRole.get().getName());
+        }
+        return accountResponse;
 
     }
 
     @Override
     public AccountResponse searchAccountByEmail(String email) {
-        return mapper.map(accountRepository.findAllByEmailContaining(email), AccountResponse.class);
+        Account account = accountRepository.findAllByEmailContaining(email);
+        AccountResponse accountResponse = mapper.map(account, AccountResponse.class);
+        Optional<Role> optionalRole = roleRepository.findById((long) account.getRole());
+        if (optionalRole.isPresent()) {
+            accountResponse.setRoleId(optionalRole.get().getId());
+            accountResponse.setRoleName(optionalRole.get().getName());
+        }
+        return accountResponse;
     }
 
     @Override
@@ -113,6 +133,11 @@ public class AccountServiceImpl implements AccountService {
         }
         for (Account account : accounts) {
             AccountResponse accountResponse = mapper.map(account, AccountResponse.class);
+            Optional<Role> optionalRole = roleRepository.findById((long) account.getRole());
+            if (optionalRole.isPresent()) {
+                accountResponse.setRoleId(optionalRole.get().getId());
+                accountResponse.setRoleName(optionalRole.get().getName());
+            }
             accountsResponse.add(accountResponse);
         }
         return accountsResponse;
