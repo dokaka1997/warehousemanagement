@@ -3,12 +3,11 @@ package com.example.warehousemanagement.controller;
 import com.example.warehousemanagement.model.request.LoginRequest;
 import com.example.warehousemanagement.model.request.RegisterRequest;
 import com.example.warehousemanagement.model.response.AccountResponse;
+import com.example.warehousemanagement.model.response.GetAllAccountResponse;
 import com.example.warehousemanagement.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -48,7 +47,7 @@ public class AccountController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<AccountResponse>> getAllAccount(@RequestParam String username, @RequestParam String fullName,
+    public ResponseEntity<GetAllAccountResponse> getAllAccount(@RequestParam String username, @RequestParam String fullName,
                                                                @RequestParam int pageIndex, @RequestParam int pageSize) {
         return ResponseEntity.ok(accountService.getAll(username, fullName, pageIndex, pageSize));
     }

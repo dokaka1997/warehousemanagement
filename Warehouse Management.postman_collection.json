@@ -345,7 +345,19 @@
 			"name": "Get Top Product Selling",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/product/best_selling",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"product",
+						"best_selling"
+					]
+				}
 			},
 			"response": []
 		},
@@ -438,6 +450,45 @@
 					"path": [
 						"product",
 						"export"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Product Warehouse",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/warehouse",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"warehouse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Branch Manager",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/branch/manager",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"branch",
+						"manager"
 					]
 				}
 			},

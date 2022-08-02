@@ -1,6 +1,5 @@
 package com.example.warehousemanagement.service;
 
-import com.example.warehousemanagement.entity.OrderDetail;
 import com.example.warehousemanagement.model.response.BestProductSellingResponse;
 
 import java.util.List;

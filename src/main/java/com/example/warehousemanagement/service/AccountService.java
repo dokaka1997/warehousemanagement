@@ -3,8 +3,7 @@ package com.example.warehousemanagement.service;
 import com.example.warehousemanagement.model.request.LoginRequest;
 import com.example.warehousemanagement.model.request.RegisterRequest;
 import com.example.warehousemanagement.model.response.AccountResponse;
-
-import java.util.List;
+import com.example.warehousemanagement.model.response.GetAllAccountResponse;
 
 public interface AccountService {
     AccountResponse login(LoginRequest loginRequest);
@@ -17,6 +16,6 @@ public interface AccountService {
 
     Boolean deleteAccountById(Long id);
 
-    List<AccountResponse> getAll(String username, String fullName,
-                         int pageIndex, int pageSize);
+    GetAllAccountResponse getAll(String username, String fullName,
+                                 int pageIndex, int pageSize);
 }

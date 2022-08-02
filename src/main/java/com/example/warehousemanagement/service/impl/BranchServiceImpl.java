@@ -1,8 +1,14 @@
 package com.example.warehousemanagement.service.impl;
 
+import com.example.warehousemanagement.constant.RoleUser;
+import com.example.warehousemanagement.entity.Account;
 import com.example.warehousemanagement.entity.Branch;
 import com.example.warehousemanagement.entity.Order;
+import com.example.warehousemanagement.entity.Role;
+import com.example.warehousemanagement.model.response.AccountResponse;
+import com.example.warehousemanagement.model.response.GetAllBranchResponse;
 import com.example.warehousemanagement.model.response.IncomeBranchResponse;
+import com.example.warehousemanagement.repository.AccountRepository;
 import com.example.warehousemanagement.repository.BranchRepository;
 import com.example.warehousemanagement.repository.OrderRepository;
 import com.example.warehousemanagement.service.BranchService;
@@ -12,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -19,12 +26,14 @@ public class BranchServiceImpl implements BranchService {
 
     BranchRepository branchRepository;
     OrderRepository orderRepository;
+    AccountRepository accountRepository;
 
 
     @Autowired
-    public BranchServiceImpl(BranchRepository branchRepository, OrderRepository orderRepository) {
+    public BranchServiceImpl(BranchRepository branchRepository, OrderRepository orderRepository, AccountRepository accountRepository) {
         this.branchRepository = branchRepository;
         this.orderRepository = orderRepository;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -47,7 +56,7 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public List<IncomeBranchResponse> getListIncomeBranch() {
+    public List<IncomeBranchResponse> getListIncomeBranch(String date) {
         List<IncomeBranchResponse> incomeBranchResponses = new ArrayList<>();
         List<Branch> branches = branchRepository.findAll();
         for (Branch branch : branches) {
@@ -76,8 +85,21 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public List<Branch> getAllBranch(int pageIndex, int pageSize, String name, boolean active) {
+    public GetAllBranchResponse getAllBranch(int pageIndex, int pageSize, String name, boolean active) {
+        GetAllBranchResponse response = new GetAllBranchResponse();
         List<Branch> branches = branchRepository.findAllByNameContainingAndActiveIs(name, active, PageRequest.of(pageIndex, pageSize));
-        return branches;
+        response.setTotal(branchRepository.findAll().size());
+        response.setBranches(branches);
+        return response;
+    }
+
+    @Override
+    public List<Account> getAllBranchManager() {
+        List<Account> accounts = accountRepository.findAllByRole(RoleUser.BRANCH_MANAGER);
+        List<Branch> branches = branchRepository.findAll();
+        for (Branch branch : branches) {
+            accounts.removeIf(account -> Objects.equals(account.getId(), branch.getAccountId()));
+        }
+        return accounts;
     }
 }

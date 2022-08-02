@@ -5,6 +5,7 @@ import com.example.warehousemanagement.entity.Role;
 import com.example.warehousemanagement.model.request.LoginRequest;
 import com.example.warehousemanagement.model.request.RegisterRequest;
 import com.example.warehousemanagement.model.response.AccountResponse;
+import com.example.warehousemanagement.model.response.GetAllAccountResponse;
 import com.example.warehousemanagement.repository.AccountRepository;
 import com.example.warehousemanagement.repository.RoleRepository;
 import com.example.warehousemanagement.service.AccountService;
@@ -108,7 +109,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AccountResponse> getAll(String username, String fullName, int pageIndex, int pageSize) {
+    public GetAllAccountResponse getAll(String username, String fullName, int pageIndex, int pageSize) {
+        GetAllAccountResponse getAllAccountResponse = new GetAllAccountResponse();
         List<Account> accounts;
         List<AccountResponse> accountsResponse = new ArrayList<>();
         if (fullName.isEmpty() && username.isEmpty()) {
@@ -140,6 +142,8 @@ public class AccountServiceImpl implements AccountService {
             }
             accountsResponse.add(accountResponse);
         }
-        return accountsResponse;
+        getAllAccountResponse.setTotal(accounts.size());
+        getAllAccountResponse.setAccounts(accountsResponse);
+        return getAllAccountResponse;
     }
 }

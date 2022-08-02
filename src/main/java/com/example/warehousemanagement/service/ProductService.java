@@ -2,6 +2,7 @@ package com.example.warehousemanagement.service;
 
 import com.example.warehousemanagement.entity.Product;
 import com.example.warehousemanagement.model.request.ExportProductRequest;
+import com.example.warehousemanagement.model.response.GetAllProductResponse;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface ProductService {
 
     Product addNewProduct(Product product);
 
-    List<Product> getAllProduct(int pageIndex, int pageSize);
+    GetAllProductResponse getAllProduct(int pageIndex, int pageSize);
 
     Product getById(Long id);
 

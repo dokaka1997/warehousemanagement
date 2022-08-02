@@ -3,6 +3,7 @@ package com.example.warehousemanagement.controller;
 import com.example.warehousemanagement.entity.Product;
 import com.example.warehousemanagement.model.request.ExportProductRequest;
 import com.example.warehousemanagement.model.response.BestProductSellingResponse;
+import com.example.warehousemanagement.model.response.GetAllProductResponse;
 import com.example.warehousemanagement.service.OrderDetailService;
 import com.example.warehousemanagement.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ProductController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Product>> getAllProduct(@RequestParam int pageIndex, @RequestParam int pageSize) {
+    public ResponseEntity<GetAllProductResponse> getAllProduct(@RequestParam int pageIndex, @RequestParam int pageSize) {
         return ResponseEntity.ok(productService.getAllProduct(pageIndex, pageSize));
     }
 

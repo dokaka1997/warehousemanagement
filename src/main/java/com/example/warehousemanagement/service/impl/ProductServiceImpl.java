@@ -6,6 +6,7 @@ import com.example.warehousemanagement.entity.Product;
 import com.example.warehousemanagement.entity.Warehouse;
 import com.example.warehousemanagement.model.request.ExportProductRequest;
 import com.example.warehousemanagement.model.request.ListProductExportRequest;
+import com.example.warehousemanagement.model.response.GetAllProductResponse;
 import com.example.warehousemanagement.repository.ExportDetailRepository;
 import com.example.warehousemanagement.repository.ExportRepository;
 import com.example.warehousemanagement.repository.ProductRepository;
@@ -30,10 +31,12 @@ public class ProductServiceImpl implements ProductService {
     WarehouseRepository warehouseRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, ExportRepository exportRepository, ExportDetailRepository exportDetailRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, ExportRepository exportRepository,
+                              ExportDetailRepository exportDetailRepository, WarehouseRepository warehouseRepository) {
         this.productRepository = productRepository;
         this.exportRepository = exportRepository;
         this.exportDetailRepository = exportDetailRepository;
+        this.warehouseRepository = warehouseRepository;
     }
 
     @Override
@@ -42,8 +45,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProduct(int pageIndex, int pageSize) {
-        return productRepository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
+    public GetAllProductResponse getAllProduct(int pageIndex, int pageSize) {
+        GetAllProductResponse getAllProductResponse = new GetAllProductResponse();
+        getAllProductResponse.setTotal(productRepository.findAll().size());
+        getAllProductResponse.setProducts(productRepository.findAll(PageRequest.of(pageIndex, pageSize)).getContent());
+        return getAllProductResponse;
     }
 
     @Override
