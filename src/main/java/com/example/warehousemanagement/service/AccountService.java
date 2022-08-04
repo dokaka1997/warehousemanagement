@@ -14,8 +14,10 @@ public interface AccountService {
 
     AccountResponse searchAccountByEmail(String email);
 
+    AccountResponse updateAccountResponse(RegisterRequest registerRequest);
+
     Boolean deleteAccountById(Long id);
 
-    GetAllAccountResponse getAll(String username, String fullName,
+    GetAllAccountResponse getAll(String username, String fullName, String email, int role,
                                  int pageIndex, int pageSize);
 }

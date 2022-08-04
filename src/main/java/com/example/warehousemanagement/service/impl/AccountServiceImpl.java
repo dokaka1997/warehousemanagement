@@ -48,10 +48,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponse register(RegisterRequest registerRequest) {
-        Account account = new Account();
-        if (registerRequest.getId() != null) {
-            account.setId(registerRequest.getId());
+        if (accountRepository.findAllByUsernameContainingOrEmailContaining(registerRequest.getUsername(), registerRequest.getEmail()) != null) {
+            throw new RuntimeException("Username or Email existed !!!");
         }
+        Account account = new Account();
         account.setEmail(registerRequest.getEmail());
         account.setFullName(registerRequest.getFullName());
         account.setPassword(registerRequest.getPassword());
@@ -99,6 +99,29 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public AccountResponse updateAccountResponse(RegisterRequest registerRequest) {
+        Account account = new Account();
+        if (registerRequest.getId() != null) {
+            account.setId(registerRequest.getId());
+        }
+        account.setEmail(registerRequest.getEmail());
+        account.setFullName(registerRequest.getFullName());
+        account.setPassword(registerRequest.getPassword());
+        account.setUsername(registerRequest.getUsername());
+        account.setRole(registerRequest.getRole());
+        account.setImage(registerRequest.getImage());
+        accountRepository.save(account);
+        AccountResponse accountResponse;
+        accountResponse = mapper.map(account, AccountResponse.class);
+        Optional<Role> optionalRole = roleRepository.findById((long) account.getRole());
+        if (optionalRole.isPresent()) {
+            accountResponse.setRoleId(optionalRole.get().getId());
+            accountResponse.setRoleName(optionalRole.get().getName());
+        }
+        return accountResponse;
+    }
+
+    @Override
     public Boolean deleteAccountById(Long id) {
         Optional<Account> optionalAccount = accountRepository.findById(id);
         if (optionalAccount.isPresent()) {
@@ -109,29 +132,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public GetAllAccountResponse getAll(String username, String fullName, int pageIndex, int pageSize) {
+    public GetAllAccountResponse getAll(String username, String fullName, String email, int role, int pageIndex, int pageSize) {
         GetAllAccountResponse getAllAccountResponse = new GetAllAccountResponse();
         List<Account> accounts;
         List<AccountResponse> accountsResponse = new ArrayList<>();
-        if (fullName.isEmpty() && username.isEmpty()) {
-            accounts = accountRepository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
+        if (role != -1) {
+            accounts = accountRepository.findAllByUsernameContainingAndFullNameContainingAndEmailContainingAndRoleIs(username, fullName, email, role, PageRequest.of(pageIndex, pageSize));
         } else {
-            if (username.isEmpty()) {
-                accounts = accountRepository.findAllByFullNameContaining(fullName);
-            } else if (fullName.isEmpty()) {
-                accounts = accountRepository.findAllByUsernameContaining(username);
-            } else {
-                accounts = accountRepository.findAllByUsernameContainingOrFullNameContaining(username, fullName);
-            }
-            int start = pageIndex * pageSize;
-            for (int i = 0; i < accounts.size(); i++) {
-                if (i >= start && i < start + pageSize) {
-                    if (i > start + pageSize) {
-                        break;
-                    }
-                    accounts.add(accounts.get(i));
-                }
-            }
+            accounts = accountRepository.findAllByUsernameContainingAndFullNameContainingAndEmailContaining(username, fullName, email, PageRequest.of(pageIndex, pageSize));
         }
         for (Account account : accounts) {
             AccountResponse accountResponse = mapper.map(account, AccountResponse.class);
@@ -142,7 +150,7 @@ public class AccountServiceImpl implements AccountService {
             }
             accountsResponse.add(accountResponse);
         }
-        getAllAccountResponse.setTotal(accounts.size());
+        getAllAccountResponse.setTotal(accountRepository.findAll().size());
         getAllAccountResponse.setAccounts(accountsResponse);
         return getAllAccountResponse;
     }

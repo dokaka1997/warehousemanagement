@@ -16,4 +16,5 @@ public class Branch {
     private String phone;
     private Boolean active;
     private Long accountId;
+    private String accountName;
 }

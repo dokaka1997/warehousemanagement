@@ -2,11 +2,13 @@ package com.example.warehousemanagement.service.impl;
 
 import com.example.warehousemanagement.entity.Product;
 import com.example.warehousemanagement.entity.Warehouse;
+import com.example.warehousemanagement.model.response.ListProductWarehouseResponse;
 import com.example.warehousemanagement.model.response.ProductWarehouseResponse;
 import com.example.warehousemanagement.repository.ProductRepository;
 import com.example.warehousemanagement.repository.WarehouseRepository;
 import com.example.warehousemanagement.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,9 +29,10 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public List<ProductWarehouseResponse> getAllProduct() {
+    public ListProductWarehouseResponse getAllProduct(int pageIndex, int pageSize) {
+        ListProductWarehouseResponse response = new ListProductWarehouseResponse();
         List<ProductWarehouseResponse> productWarehouseResponses = new ArrayList<>();
-        List<Warehouse> warehouses = warehouseRepository.findAll();
+        List<Warehouse> warehouses = warehouseRepository.findAll(PageRequest.of(pageIndex, pageSize)).getContent();
 
         for (Warehouse warehouse : warehouses) {
             Optional<Product> optionalProduct = productRepository.findById(warehouse.getProductId());
@@ -42,6 +45,8 @@ public class WarehouseServiceImpl implements WarehouseService {
                 productWarehouseResponses.add(productWarehouseResponse);
             }
         }
-        return productWarehouseResponses;
+        response.setTotal(productRepository.findAll().size());
+        response.setProducts(productWarehouseResponses);
+        return response;
     }
 }

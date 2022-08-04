@@ -47,9 +47,15 @@ public class AccountController {
     }
 
     @GetMapping()
-    public ResponseEntity<GetAllAccountResponse> getAllAccount(@RequestParam String username, @RequestParam String fullName,
+    public ResponseEntity<GetAllAccountResponse> getAllAccount(@RequestParam(required = false, defaultValue = "") String username, @RequestParam(required = false, defaultValue = "") String fullName,
+                                                               @RequestParam(required = false, defaultValue = "") String email, @RequestParam(required = false, defaultValue = "-1") int role,
                                                                @RequestParam int pageIndex, @RequestParam int pageSize) {
-        return ResponseEntity.ok(accountService.getAll(username, fullName, pageIndex, pageSize));
+        return ResponseEntity.ok(accountService.getAll(username, fullName, email, role, pageIndex, pageSize));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<AccountResponse> update(@RequestBody RegisterRequest registerRequest) {
+        return ResponseEntity.ok(accountService.register(registerRequest));
     }
 
 }

@@ -13,9 +13,11 @@ import com.example.warehousemanagement.repository.ProductRepository;
 import com.example.warehousemanagement.repository.WarehouseRepository;
 import com.example.warehousemanagement.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,10 +47,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public GetAllProductResponse getAllProduct(int pageIndex, int pageSize) {
+    public GetAllProductResponse getAllProduct(String name, int size, Long category, int pageIndex, int pageSize) {
         GetAllProductResponse getAllProductResponse = new GetAllProductResponse();
+        List<Product> products;
+        if (category == -1 && size == -1) {
+            products = productRepository.findAllByNameContaining(name, PageRequest.of(pageIndex, pageSize));
+        } else {
+            if (category == -1 && size != -1) {
+                products = productRepository.findAllByNameContainingAndSizeIs(name, size, PageRequest.of(pageIndex, pageSize));
+            } else if (category != -1 && size == -1) {
+                products = productRepository.findAllByNameContainingAndAndIdCategoryIs(name, category, PageRequest.of(pageIndex, pageSize));
+            } else {
+                products = productRepository.findAllByNameContainingAndAndIdCategoryIsAndSizeIs(name, category, size, PageRequest.of(pageIndex, pageSize));
+            }
+        }
+        getAllProductResponse.setProducts(products);
         getAllProductResponse.setTotal(productRepository.findAll().size());
-        getAllProductResponse.setProducts(productRepository.findAll(PageRequest.of(pageIndex, pageSize)).getContent());
+
         return getAllProductResponse;
     }
 

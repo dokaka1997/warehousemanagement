@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -68,6 +69,12 @@ public class BranchServiceImpl implements BranchService {
                 incomeBranchResponse.setBranchName(optionalBranch.get().getName());
             }
             List<Order> orders = orderRepository.getAllByBranchId(branch.getId());
+            Date startDate, endDate;
+
+            if (date.length() == 4) {
+
+            }
+
             Double price = 0D;
             for (Order order : orders) {
                 price += order.getTotalPrice();
@@ -88,8 +95,16 @@ public class BranchServiceImpl implements BranchService {
     public GetAllBranchResponse getAllBranch(int pageIndex, int pageSize, String name, boolean active) {
         GetAllBranchResponse response = new GetAllBranchResponse();
         List<Branch> branches = branchRepository.findAllByNameContainingAndActiveIs(name, active, PageRequest.of(pageIndex, pageSize));
-        response.setTotal(branchRepository.findAll().size());
-        response.setBranches(branches);
+        List<Branch> rs = new ArrayList<>();
+        for (Branch branch : branches) {
+            Optional<Account> optionalAccount = accountRepository.findById(branch.getAccountId());
+            if (optionalAccount.isPresent()) {
+                branch.setAccountName(optionalAccount.get().getUsername());
+            }
+            rs.add(branch);
+        }
+        response.setTotal(branchRepository.findAllByActiveIs(active).size());
+        response.setBranches(rs);
         return response;
     }
 

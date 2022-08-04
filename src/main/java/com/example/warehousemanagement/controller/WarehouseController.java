@@ -1,15 +1,10 @@
 package com.example.warehousemanagement.controller;
 
-import com.example.warehousemanagement.model.response.ProductWarehouseResponse;
+import com.example.warehousemanagement.model.response.ListProductWarehouseResponse;
 import com.example.warehousemanagement.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
@@ -24,7 +19,7 @@ public class WarehouseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductWarehouseResponse>> getAccountById() {
-        return ResponseEntity.ok(warehouseService.getAllProduct());
+    public ResponseEntity<ListProductWarehouseResponse> getAccountById(@RequestParam int pageIndex, @RequestParam int pageSize) {
+        return ResponseEntity.ok(warehouseService.getAllProduct(pageIndex, pageSize));
     }
 }

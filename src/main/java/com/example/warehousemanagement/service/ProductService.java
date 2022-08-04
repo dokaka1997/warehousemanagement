@@ -10,7 +10,7 @@ public interface ProductService {
 
     Product addNewProduct(Product product);
 
-    GetAllProductResponse getAllProduct(int pageIndex, int pageSize);
+    GetAllProductResponse getAllProduct(String name, int size, Long category, int pageIndex, int pageSize);
 
     Product getById(Long id);
 

@@ -9,4 +9,5 @@ import java.util.List;
 public interface BranchRepository extends JpaRepository<Branch, Long> {
 
     List<Branch> findAllByNameContainingAndActiveIs(String name, boolean active, Pageable pageable);
+    List<Branch> findAllByActiveIs(boolean active);
 }
