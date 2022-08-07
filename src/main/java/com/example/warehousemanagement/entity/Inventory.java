@@ -12,12 +12,20 @@ public class Inventory {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private Long branchId;
+
     private int quantity;
 
-    private double totalPrice;
+    private Long idCategory;
 
-    private Long productId;
+    private String name;
 
-    private Long productOfBranchId;
+    private String image;
+
+    private Double price;
+
+    private int size;
+
+    private String position;
 
 }

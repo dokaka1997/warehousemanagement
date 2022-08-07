@@ -1,13 +1,18 @@
 package com.example.warehousemanagement.service.impl;
 
 import com.example.warehousemanagement.entity.Account;
+import com.example.warehousemanagement.entity.Branch;
 import com.example.warehousemanagement.entity.Role;
+import com.example.warehousemanagement.entity.Warehouse;
 import com.example.warehousemanagement.model.request.LoginRequest;
 import com.example.warehousemanagement.model.request.RegisterRequest;
 import com.example.warehousemanagement.model.response.AccountResponse;
 import com.example.warehousemanagement.model.response.GetAllAccountResponse;
+import com.example.warehousemanagement.model.response.ListBranchAndWarehouseResponse;
 import com.example.warehousemanagement.repository.AccountRepository;
+import com.example.warehousemanagement.repository.BranchRepository;
 import com.example.warehousemanagement.repository.RoleRepository;
+import com.example.warehousemanagement.repository.WarehouseRepository;
 import com.example.warehousemanagement.service.AccountService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +29,18 @@ public class AccountServiceImpl implements AccountService {
     AccountRepository accountRepository;
     RoleRepository roleRepository;
     ModelMapper mapper;
+    BranchRepository branchRepository;
+    WarehouseRepository warehouseRepository;
 
     @Autowired
 
-    public AccountServiceImpl(AccountRepository accountRepository, RoleRepository roleRepository, ModelMapper mapper) {
+    public AccountServiceImpl(AccountRepository accountRepository, RoleRepository roleRepository, ModelMapper mapper,
+                              BranchRepository branchRepository, WarehouseRepository warehouseRepository) {
         this.accountRepository = accountRepository;
         this.roleRepository = roleRepository;
         this.mapper = mapper;
+        this.branchRepository = branchRepository;
+        this.warehouseRepository = warehouseRepository;
     }
 
 
@@ -153,5 +163,40 @@ public class AccountServiceImpl implements AccountService {
         getAllAccountResponse.setTotal(accountRepository.findAll().size());
         getAllAccountResponse.setAccounts(accountsResponse);
         return getAllAccountResponse;
+    }
+
+    @Override
+    public ListBranchAndWarehouseResponse getBranchAndWarehouseById(Long id) {
+        ListBranchAndWarehouseResponse listBranchAndWarehouseResponse = new ListBranchAndWarehouseResponse();
+        List<Warehouse> warehouses = warehouseRepository.findAll();
+
+        List<Branch> branches = branchRepository.findAll();
+
+        Optional<Account> optionalAccount = accountRepository.findById(id);
+
+        if (!optionalAccount.isPresent()) {
+            throw new RuntimeException("Account not existed !!!");
+        }
+        Account account = optionalAccount.get();
+
+        List<Warehouse> finalWarehouses = new ArrayList<>();
+
+        List<Branch> finalBranches = new ArrayList<>();
+
+        for (Warehouse warehouse : warehouses) {
+            if (warehouse.getId().equals(account.getWarehouseId())) {
+                finalWarehouses.add(warehouse);
+            }
+        }
+
+        for (Branch branch : branches) {
+            if (branch.getId().equals(account.getWarehouseId())) {
+                finalBranches.add(branch);
+            }
+        }
+        listBranchAndWarehouseResponse.setWarehouses(finalWarehouses);
+        listBranchAndWarehouseResponse.setBranches(finalBranches);
+
+        return listBranchAndWarehouseResponse;
     }
 }

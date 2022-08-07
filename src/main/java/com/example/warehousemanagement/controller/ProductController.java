@@ -69,4 +69,5 @@ public class ProductController {
     public ResponseEntity<ExportProductRequest> exportProduct(@RequestBody ExportProductRequest exportProductRequests) throws Exception {
         return ResponseEntity.ok(productService.addNewExport(exportProductRequests));
     }
+    
 }

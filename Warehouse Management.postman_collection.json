@@ -132,7 +132,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/account?username=g&fullName=d&pageIndex=0&pageSize=5",
+					"raw": "http://localhost:8081/account?username=&fullName=&pageIndex=0&pageSize=5&email=1&role",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -144,11 +144,11 @@
 					"query": [
 						{
 							"key": "username",
-							"value": "g"
+							"value": ""
 						},
 						{
 							"key": "fullName",
-							"value": "d"
+							"value": ""
 						},
 						{
 							"key": "pageIndex",
@@ -157,6 +157,14 @@
 						{
 							"key": "pageSize",
 							"value": "5"
+						},
+						{
+							"key": "email",
+							"value": "1"
+						},
+						{
+							"key": "role",
+							"value": null
 						}
 					]
 				}
@@ -216,7 +224,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/product?pageIndex=0&pageSize=3",
+					"raw": "http://localhost:8081/product?pageIndex=0&pageSize=3&name=&size=2&category=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -233,6 +241,18 @@
 						{
 							"key": "pageSize",
 							"value": "3"
+						},
+						{
+							"key": "name",
+							"value": ""
+						},
+						{
+							"key": "size",
+							"value": "2"
+						},
+						{
+							"key": "category",
+							"value": "1"
 						}
 					]
 				}
@@ -395,7 +415,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/branch?pageIndex=0&pageSize=6&active=&name=",
+					"raw": "http://localhost:8081/branch?pageIndex=0&pageSize=6&active=false&name=",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -415,7 +435,7 @@
 						},
 						{
 							"key": "active",
-							"value": ""
+							"value": "false"
 						},
 						{
 							"key": "name",
@@ -461,7 +481,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/warehouse",
+					"raw": "http://localhost:8081/warehouse?pageIndex=0&pageSize=3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -469,6 +489,16 @@
 					"port": "8081",
 					"path": [
 						"warehouse"
+					],
+					"query": [
+						{
+							"key": "pageIndex",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "3"
+						}
 					]
 				}
 			},
@@ -506,7 +536,20 @@
 			"name": "Get Income Branh",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/branch/income/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"branch",
+						"income",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -515,6 +558,15 @@
 			"request": {
 				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\" : 1,\r\n    \"username\": \"ggggg\",\r\n    \"password\": \"gggg\",\r\n    \"email\": \"emggail\",\r\n    \"fullName\": \"ggggg\",\r\n    \"role\": 1,\r\n    \"image\": \"image\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://localhost:8081/account/update",
 					"protocol": "http",
@@ -527,6 +579,67 @@
 						"update"
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Inventory",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/inventory?pageIndex=0&pageSize=5&name=a&size=&category=1&branchId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"inventory"
+					],
+					"query": [
+						{
+							"key": "pageIndex",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "5"
+						},
+						{
+							"key": "name",
+							"value": "a"
+						},
+						{
+							"key": "size",
+							"value": ""
+						},
+						{
+							"key": "category",
+							"value": "1"
+						},
+						{
+							"key": "branchId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Branch And Warehouse By User id",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Add New Inventory",
+			"request": {
+				"method": "GET",
+				"header": []
 			},
 			"response": []
 		}

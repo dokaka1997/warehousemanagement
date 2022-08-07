@@ -4,6 +4,7 @@ import com.example.warehousemanagement.model.request.LoginRequest;
 import com.example.warehousemanagement.model.request.RegisterRequest;
 import com.example.warehousemanagement.model.response.AccountResponse;
 import com.example.warehousemanagement.model.response.GetAllAccountResponse;
+import com.example.warehousemanagement.model.response.ListBranchAndWarehouseResponse;
 import com.example.warehousemanagement.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +56,13 @@ public class AccountController {
 
     @PutMapping("/update")
     public ResponseEntity<AccountResponse> update(@RequestBody RegisterRequest registerRequest) {
-        return ResponseEntity.ok(accountService.register(registerRequest));
+        return ResponseEntity.ok(accountService.updateAccountResponse(registerRequest));
     }
+
+    @GetMapping("/branch_warehouse/{id}")
+    public ResponseEntity<ListBranchAndWarehouseResponse> getBranchAndWarehouseById(@PathVariable Long id) {
+        return ResponseEntity.ok(accountService.getBranchAndWarehouseById(id));
+    }
+
 
 }

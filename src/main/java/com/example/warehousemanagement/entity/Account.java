@@ -18,5 +18,6 @@ public class Account {
     private int role;
     private String fullName;
     private Long idBranch;
+    private Long warehouseId;
     private String image;
 }
