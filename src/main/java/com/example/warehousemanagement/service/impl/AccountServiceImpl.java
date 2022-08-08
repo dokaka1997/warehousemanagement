@@ -110,10 +110,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponse updateAccountResponse(RegisterRequest registerRequest) {
-        Account account = new Account();
-        if (registerRequest.getId() != null) {
-            account.setId(registerRequest.getId());
+        if (registerRequest.getId() == null) {
+            throw new RuntimeException("Id can't not be null");
         }
+        Optional<Account> optionalAccount = accountRepository.findById(registerRequest.getId());
+        if (!optionalAccount.isPresent()) {
+            throw new RuntimeException("Account not existed.");
+        }
+        Account account = optionalAccount.get();
+        account.setId(registerRequest.getId());
         account.setEmail(registerRequest.getEmail());
         account.setFullName(registerRequest.getFullName());
         account.setPassword(registerRequest.getPassword());
@@ -121,8 +126,7 @@ public class AccountServiceImpl implements AccountService {
         account.setRole(registerRequest.getRole());
         account.setImage(registerRequest.getImage());
         accountRepository.save(account);
-        AccountResponse accountResponse;
-        accountResponse = mapper.map(account, AccountResponse.class);
+        AccountResponse accountResponse = mapper.map(account, AccountResponse.class);
         Optional<Role> optionalRole = roleRepository.findById((long) account.getRole());
         if (optionalRole.isPresent()) {
             accountResponse.setRoleId(optionalRole.get().getId());

@@ -24,6 +24,8 @@ public class Product {
 
     private int size;
 
+    private String sku;
+
     private String position;
 
 }
