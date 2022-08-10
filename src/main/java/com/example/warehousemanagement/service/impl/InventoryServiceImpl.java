@@ -46,4 +46,14 @@ public class InventoryServiceImpl implements InventoryService {
     public Inventory addNewInventory(Inventory inventory) {
         return inventoryRepository.save(inventory);
     }
+
+    @Override
+    public Boolean deleteInventoryById(Long id) {
+        try {
+            inventoryRepository.deleteById(id);
+            return true;
+        } catch (Exception exception) {
+            return false;
+        }
+    }
 }

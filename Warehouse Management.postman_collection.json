@@ -525,10 +525,47 @@
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "Get All Product Warehouse",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/warehouse?pageIndex=0&pageSize=10&name&size&category&warehouseId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"warehouse"
+					],
+					"query": [
+						{
+							"key": "pageIndex",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "name",
+							"value": null
+						},
+						{
+							"key": "size",
+							"value": null
+						},
+						{
+							"key": "category",
+							"value": null
+						},
+						{
+							"key": "warehouseId",
+							"value": "1"
+						}
+					]
+				}
 			},
 			"response": []
 		},
@@ -538,7 +575,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/branch/income/1",
+					"raw": "http://localhost:8081/branch/income",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -546,8 +583,7 @@
 					"port": "8081",
 					"path": [
 						"branch",
-						"income",
-						"1"
+						"income"
 					]
 				}
 			},
@@ -560,7 +596,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\" : 1,\r\n    \"username\": \"ggggg\",\r\n    \"password\": \"gggg\",\r\n    \"email\": \"emggail\",\r\n    \"fullName\": \"ggggg\",\r\n    \"role\": 1,\r\n    \"image\": \"image\"\r\n}",
+					"raw": "{\r\n    \"id\" : 3232,\r\n    \"usernam\": \"ggggg\",\r\n    \"password\": \"gggg\",\r\n    \"email\": \"emggail\",\r\n    \"fullName\": \"ggggg\",\r\n    \"role\": 1,\r\n    \"image\": \"image\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -631,12 +667,77 @@
 			"name": "Get All Branch And Warehouse By User id",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/account/branch_warehouse/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"account",
+						"branch_warehouse",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Add New Inventory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"quantity\": 1,\r\n    \"idCategory\": 1,\r\n    \"name\": \"aa\",\r\n    \"image\": \"image\",\r\n    \"price\": 1000,\r\n    \"size\": 1111,\r\n    \"position\": \"position\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/inventory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"inventory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add New Ware House",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Delete inventory By Id",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Active Branch",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Branch",
 			"request": {
 				"method": "GET",
 				"header": []

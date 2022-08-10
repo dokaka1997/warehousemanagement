@@ -5,7 +5,7 @@ import java.util.List;
 public class ListProductWarehouseResponse {
     private int total;
 
-    private List<ProductWarehouseResponse> products;
+    private List<WarehouseResponse> products;
 
     public int getTotal() {
         return total;
@@ -15,11 +15,11 @@ public class ListProductWarehouseResponse {
         this.total = total;
     }
 
-    public List<ProductWarehouseResponse> getProducts() {
+    public List<WarehouseResponse> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ProductWarehouseResponse> products) {
+    public void setProducts(List<WarehouseResponse> products) {
         this.products = products;
     }
 }

@@ -2,11 +2,12 @@ package com.example.warehousemanagement.model.response;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class IncomeBranchResponse {
 
-    private Long id;
-    private String branchName;
+    private Date date;
     private Double income;
 
 }

@@ -16,6 +16,8 @@ public class Product {
 
     private Long idCategory;
 
+    private Long warehouseId;
+
     private String name;
 
     private String image;

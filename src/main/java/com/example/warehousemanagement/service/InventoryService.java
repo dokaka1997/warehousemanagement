@@ -9,4 +9,6 @@ public interface InventoryService {
 
     Inventory addNewInventory(Inventory inventory);
 
+    Boolean deleteInventoryById(Long id);
+
 }

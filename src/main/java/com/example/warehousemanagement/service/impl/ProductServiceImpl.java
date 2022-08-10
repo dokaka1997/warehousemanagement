@@ -13,11 +13,9 @@ import com.example.warehousemanagement.repository.ProductRepository;
 import com.example.warehousemanagement.repository.WarehouseRepository;
 import com.example.warehousemanagement.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,9 +54,9 @@ public class ProductServiceImpl implements ProductService {
             if (category == -1 && size != -1) {
                 products = productRepository.findAllByNameContainingAndSizeIs(name, size, PageRequest.of(pageIndex, pageSize));
             } else if (category != -1 && size == -1) {
-                products = productRepository.findAllByNameContainingAndAndIdCategoryIs(name, category, PageRequest.of(pageIndex, pageSize));
+                products = productRepository.findAllByNameContainingAndIdCategoryIs(name, category, PageRequest.of(pageIndex, pageSize));
             } else {
-                products = productRepository.findAllByNameContainingAndAndIdCategoryIsAndSizeIs(name, category, size, PageRequest.of(pageIndex, pageSize));
+                products = productRepository.findAllByNameContainingAndIdCategoryIsAndSizeIs(name, category, size, PageRequest.of(pageIndex, pageSize));
             }
         }
         getAllProductResponse.setProducts(products);

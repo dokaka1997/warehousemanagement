@@ -9,13 +9,23 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByIdBranch(Long idBranch);
 
+    List<Product> findAllByWarehouseId(Long warehouse);
+
     List<Product> findAllByIdCategory(Long category);
 
     List<Product> findAllByNameContaining(String name, Pageable pageable);
 
     List<Product> findAllByNameContainingAndSizeIs(String name, int size, Pageable pageable);
 
-    List<Product> findAllByNameContainingAndAndIdCategoryIs(String name, Long id, Pageable pageable);
+    List<Product> findAllByNameContainingAndIdCategoryIs(String name, Long id, Pageable pageable);
 
-    List<Product> findAllByNameContainingAndAndIdCategoryIsAndSizeIs(String name, Long id, int size, Pageable pageable);
+    List<Product> findAllByNameContainingAndIdCategoryIsAndSizeIs(String name, Long id, int size, Pageable pageable);
+
+    List<Product> findAllByWarehouseIdAndNameContaining(Long warehouse, String name, Pageable pageable);
+
+    List<Product> findAllByWarehouseIdAndNameContainingAndIdCategory(Long warehouse, String name, Long category, Pageable pageable);
+
+    List<Product> findAllByWarehouseIdAndNameContainingAndSize(Long warehouse, String name, int size, Pageable pageable);
+
+    List<Product> findAllByWarehouseIdAndNameContainingAndIdCategoryAndSize(Long warehouse, String name, Long category, int size, Pageable pageable);
 }

@@ -36,4 +36,10 @@ public class InventoryController {
         return ResponseEntity.ok(inventoryService.addNewInventory(inventory));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteInventoryById(@PathVariable Long id) {
+
+        return ResponseEntity.ok(inventoryService.deleteInventoryById(id));
+    }
+
 }
