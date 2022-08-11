@@ -58,11 +58,10 @@ public class WarehouseServiceImpl implements WarehouseService {
         for (Product product : products) {
             WarehouseResponse warehouseResponse = mapper.map(product, WarehouseResponse.class);
             warehouseResponses.add(warehouseResponse);
-
         }
 
         for (WarehouseResponse warehouseResponse : warehouseResponses) {
-            Warehouse warehouse1 = warehouseRepository.findByProductId(warehouseResponse.getId());
+            Warehouse warehouse1 = warehouseRepository.findFirstByProductId(warehouseResponse.getId());
             if (warehouse1 != null) {
                 warehouseResponse.setQuantity(warehouse1.getQuantity());
             }

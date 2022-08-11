@@ -22,4 +22,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findAllByFullNameContaining(String fullName);
 
     List<Account> findAllByRole(int role);
+
+    List<Account> findAllByRoleAndIdBranchNull(int role);
 }

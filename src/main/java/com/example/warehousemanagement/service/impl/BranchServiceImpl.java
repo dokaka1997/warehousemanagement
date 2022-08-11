@@ -63,12 +63,21 @@ public class BranchServiceImpl implements BranchService {
             incomeBranchResponse.setIncome(entry.getValue());
             incomeBranchResponses.add(incomeBranchResponse);
         }
+        Collections.sort(incomeBranchResponses);
         return incomeBranchResponses;
     }
 
     @Override
     public Branch addNewBranch(Branch branch) {
-        return branchRepository.save(branch);
+        Optional<Account> optionalAccount = accountRepository.findById(branch.getAccountId());
+        if (!optionalAccount.isPresent()) {
+            throw new RuntimeException("Account not found");
+        }
+        Account account = optionalAccount.get();
+        branch = branchRepository.save(branch);
+        account.setIdBranch(branch.getId());
+        accountRepository.save(account);
+        return branch;
     }
 
     @Override

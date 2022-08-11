@@ -54,6 +54,7 @@ public class AccountController {
         return ResponseEntity.ok(accountService.getAll(username, fullName, email, role, pageIndex, pageSize));
     }
 
+
     @PutMapping("/update")
     public ResponseEntity<AccountResponse> update(@RequestBody RegisterRequest registerRequest) {
         return ResponseEntity.ok(accountService.updateAccountResponse(registerRequest));

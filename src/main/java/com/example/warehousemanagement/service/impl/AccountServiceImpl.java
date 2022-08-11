@@ -108,6 +108,7 @@ public class AccountServiceImpl implements AccountService {
         return accountResponse;
     }
 
+
     @Override
     public AccountResponse updateAccountResponse(RegisterRequest registerRequest) {
         if (registerRequest.getId() == null) {

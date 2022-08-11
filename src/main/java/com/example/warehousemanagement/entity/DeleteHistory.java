@@ -15,7 +15,15 @@ public class DeleteHistory {
 
     private Long inventoryId;
 
+    private Long branchId;
+
     private int quantity;
 
     private Date deleteDate;
+
+    private String reason;
+
+    private Long accountId;
+
+    private String accountName;
 }

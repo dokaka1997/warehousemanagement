@@ -1,11 +1,15 @@
 package com.example.warehousemanagement.controller;
 
+import com.example.warehousemanagement.entity.DeleteHistory;
 import com.example.warehousemanagement.entity.Inventory;
+import com.example.warehousemanagement.model.request.DeleteProductInventoryRequest;
 import com.example.warehousemanagement.model.response.ListProductBranchResponse;
 import com.example.warehousemanagement.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -36,10 +40,16 @@ public class InventoryController {
         return ResponseEntity.ok(inventoryService.addNewInventory(inventory));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteInventoryById(@PathVariable Long id) {
+    @DeleteMapping()
+    public ResponseEntity<Boolean> deleteInventoryById(@RequestBody DeleteProductInventoryRequest deleteProductInventoryRequest) {
 
-        return ResponseEntity.ok(inventoryService.deleteInventoryById(id));
+        return ResponseEntity.ok(inventoryService.deleteInventoryById(deleteProductInventoryRequest));
     }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<DeleteHistory>> viewDeleteHistory(@PathVariable Long id) {
+
+        return ResponseEntity.ok(inventoryService.viewDeleteHistory(id));
+    }
 }

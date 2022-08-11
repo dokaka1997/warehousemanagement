@@ -575,7 +575,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/branch/income",
+					"raw": "http://localhost:8081/branch/income?startDate=2002-02-02&endDate=2023-02-02&branchId=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -584,6 +584,20 @@
 					"path": [
 						"branch",
 						"income"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2002-02-02"
+						},
+						{
+							"key": "endDate",
+							"value": "2023-02-02"
+						},
+						{
+							"key": "branchId",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -715,16 +729,48 @@
 		{
 			"name": "Add New Ware House",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"productId\" : 1,\r\n    \"quantity\" : 12\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/warehouse",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"warehouse"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Delete inventory By Id",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/inventory/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"inventory",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
@@ -732,15 +778,118 @@
 			"name": "Active Branch",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/branch/active?id=1&active=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"branch",
+						"active"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						},
+						{
+							"key": "active",
+							"value": "true"
+						}
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Delete Branch",
 			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/branch/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"branch",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Inventory",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\" : 2,\r\n    \"branchId\" : 2,\r\n    \"quantity\" : 1,\r\n    \"accountId\" : 1,\r\n    \"accountName\" : \"accountName\",\r\n    \"reason\" : \"reason\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/inventory",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"inventory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Branch By Id",
+			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/branch/id/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"branch",
+						"id",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Delete History",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/inventory/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"inventory",
+						"2"
+					]
+				}
 			},
 			"response": []
 		}

@@ -31,7 +31,7 @@ public class BranchController {
     }
 
     @PostMapping
-    public ResponseEntity<Branch> addnewBranch(@RequestBody Branch branch) {
+    public ResponseEntity<Branch> addNewBranch(@RequestBody Branch branch) {
         return ResponseEntity.ok(branchService.addNewBranch(branch));
     }
 
