@@ -81,9 +81,14 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public GetAllBranchResponse getAllBranch(int pageIndex, int pageSize, String name, boolean active) {
+    public GetAllBranchResponse getAllBranch(int pageIndex, int pageSize, String name, Boolean active) {
         GetAllBranchResponse response = new GetAllBranchResponse();
-        List<Branch> branches = branchRepository.findAllByNameContainingAndActiveIs(name, active, PageRequest.of(pageIndex, pageSize));
+        List<Branch> branches;
+        if (active == null) {
+            branches = branchRepository.findAllByNameContaining(name, PageRequest.of(pageIndex, pageSize));
+        } else {
+            branches = branchRepository.findAllByNameContainingAndActiveIs(name, active, PageRequest.of(pageIndex, pageSize));
+        }
         List<Branch> rs = new ArrayList<>();
         for (Branch branch : branches) {
             Optional<Account> optionalAccount = accountRepository.findById(branch.getAccountId());

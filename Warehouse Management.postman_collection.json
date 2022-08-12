@@ -705,7 +705,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"quantity\": 1,\r\n    \"idCategory\": 1,\r\n    \"name\": \"aa\",\r\n    \"image\": \"image\",\r\n    \"price\": 1000,\r\n    \"size\": 1111,\r\n    \"position\": \"position\"\r\n}",
+					"raw": "{\r\n    \"quantity\": 1,\r\n    \"idCategory\": 1,\r\n    \"name\": \"aa\",\r\n    \"image\": \"image\",\r\n    \"price\": 1000,\r\n    \"size\": 1111,\r\n    \"position\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -733,7 +733,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"productId\" : 1,\r\n    \"quantity\" : 12\r\n}",
+					"raw": "{\r\n    \"productId\" : 1,\r\n    \"quantity\" : 12,\r\n    \"positionId\" :1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -888,6 +888,48 @@
 					"path": [
 						"inventory",
 						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Position Branch",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/position/branch/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"position",
+						"branch",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Position Warehouse",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/position/warehouse/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"position",
+						"warehouse",
+						"1"
 					]
 				}
 			},

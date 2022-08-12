@@ -13,7 +13,7 @@ public interface BranchService {
 
     Branch addNewBranch(Branch branch);
 
-    GetAllBranchResponse getAllBranch(int pageIndex, int pageSize, String name, boolean active);
+    GetAllBranchResponse getAllBranch(int pageIndex, int pageSize, String name, Boolean active);
 
     List<Account> getAllBranchManager();
 

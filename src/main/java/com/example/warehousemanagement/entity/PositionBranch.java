@@ -6,26 +6,15 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "inventory")
-public class Inventory {
+@Table(name = "position_branch")
+public class PositionBranch {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private Long branchId;
 
-    private int quantity;
-
-    private Long idCategory;
+    private boolean status;
 
     private String name;
-
-    private String image;
-
-    private Double price;
-
-    private int size;
-
-    private Long position;
-
 }

@@ -6,9 +6,15 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@Table(name = "product")
-public class Position {
+@Table(name = "position_warehouse")
+public class PositionWarehouse {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    private Long warehouseId;
+
+    private boolean status;
+
+    private String name;
 }

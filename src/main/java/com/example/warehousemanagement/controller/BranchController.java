@@ -39,7 +39,7 @@ public class BranchController {
     public ResponseEntity<GetAllBranchResponse> getAllBranch(@RequestParam int pageIndex,
                                                              @RequestParam int pageSize,
                                                              @RequestParam(required = false, defaultValue = "") String name,
-                                                             @RequestParam(required = false, defaultValue = "true") boolean active) {
+                                                             @RequestParam(required = false ) Boolean active) {
         return ResponseEntity.ok(branchService.getAllBranch(pageIndex, pageSize, name, active));
     }
 

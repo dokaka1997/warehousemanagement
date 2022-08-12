@@ -2,10 +2,12 @@ package com.example.warehousemanagement.service.impl;
 
 import com.example.warehousemanagement.entity.DeleteHistory;
 import com.example.warehousemanagement.entity.Inventory;
+import com.example.warehousemanagement.entity.PositionBranch;
 import com.example.warehousemanagement.model.request.DeleteProductInventoryRequest;
 import com.example.warehousemanagement.model.response.ListProductBranchResponse;
 import com.example.warehousemanagement.repository.DeleteHistoryRepository;
 import com.example.warehousemanagement.repository.InventoryRepository;
+import com.example.warehousemanagement.repository.PositionBranchRepository;
 import com.example.warehousemanagement.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -22,11 +24,14 @@ public class InventoryServiceImpl implements InventoryService {
 
     DeleteHistoryRepository deleteHistoryRepository;
 
+    PositionBranchRepository positionBranchRepository;
 
     @Autowired
-    public InventoryServiceImpl(InventoryRepository inventoryRepository, DeleteHistoryRepository deleteHistoryRepository) {
+    public InventoryServiceImpl(InventoryRepository inventoryRepository, DeleteHistoryRepository deleteHistoryRepository
+            , PositionBranchRepository positionBranchRepository) {
         this.inventoryRepository = inventoryRepository;
         this.deleteHistoryRepository = deleteHistoryRepository;
+        this.positionBranchRepository = positionBranchRepository;
     }
 
     @Override
@@ -52,6 +57,12 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Inventory addNewInventory(Inventory inventory) {
+        Optional<PositionBranch> optionalPositionBranch = positionBranchRepository.findById(inventory.getPosition());
+        if (optionalPositionBranch.isPresent()) {
+            PositionBranch positionBranch = optionalPositionBranch.get();
+            positionBranch.setStatus(false);
+            positionBranchRepository.save(positionBranch);
+        }
         return inventoryRepository.save(inventory);
     }
 

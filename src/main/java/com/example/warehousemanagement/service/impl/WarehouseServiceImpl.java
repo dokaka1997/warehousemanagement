@@ -1,9 +1,12 @@
 package com.example.warehousemanagement.service.impl;
 
+import com.example.warehousemanagement.entity.PositionWarehouse;
 import com.example.warehousemanagement.entity.Product;
 import com.example.warehousemanagement.entity.Warehouse;
+import com.example.warehousemanagement.model.request.AddWarehouseRequest;
 import com.example.warehousemanagement.model.response.ListProductWarehouseResponse;
 import com.example.warehousemanagement.model.response.WarehouseResponse;
+import com.example.warehousemanagement.repository.PositionWarehouseRepository;
 import com.example.warehousemanagement.repository.ProductRepository;
 import com.example.warehousemanagement.repository.WarehouseRepository;
 import com.example.warehousemanagement.service.WarehouseService;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WarehouseServiceImpl implements WarehouseService {
@@ -22,19 +26,30 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     ProductRepository productRepository;
 
+    PositionWarehouseRepository positionWarehouseRepository;
+
     ModelMapper mapper;
 
     @Autowired
-    public WarehouseServiceImpl(WarehouseRepository warehouseRepository, ProductRepository productRepository, ModelMapper mapper) {
+    public WarehouseServiceImpl(WarehouseRepository warehouseRepository, ProductRepository productRepository,
+                                ModelMapper mapper, PositionWarehouseRepository positionWarehouseRepository) {
         this.warehouseRepository = warehouseRepository;
         this.productRepository = productRepository;
         this.mapper = mapper;
+        this.positionWarehouseRepository = positionWarehouseRepository;
     }
 
 
     @Override
-    public Warehouse addNewWarehouse(Warehouse warehouse) {
-
+    public Warehouse addNewWarehouse(AddWarehouseRequest addWarehouseRequest) {
+        Warehouse warehouse = new Warehouse();
+        warehouse.setQuantity(addWarehouseRequest.getQuantity());
+        warehouse.setProductId(addWarehouseRequest.getProductId());
+        Optional<PositionWarehouse> positionWarehouse = positionWarehouseRepository.findById(addWarehouseRequest.getPositionId());
+        if (positionWarehouse.isPresent()) {
+            positionWarehouse.get().setStatus(false);
+            positionWarehouseRepository.save(positionWarehouse.get());
+        }
         return warehouseRepository.save(warehouse);
     }
 
