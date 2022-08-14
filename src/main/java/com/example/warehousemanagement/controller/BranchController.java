@@ -4,6 +4,7 @@ import com.example.warehousemanagement.entity.Account;
 import com.example.warehousemanagement.entity.Branch;
 import com.example.warehousemanagement.model.response.GetAllBranchResponse;
 import com.example.warehousemanagement.model.response.IncomeBranchResponse;
+import com.example.warehousemanagement.model.response.ListProductBranchResponse;
 import com.example.warehousemanagement.service.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class BranchController {
     public ResponseEntity<GetAllBranchResponse> getAllBranch(@RequestParam int pageIndex,
                                                              @RequestParam int pageSize,
                                                              @RequestParam(required = false, defaultValue = "") String name,
-                                                             @RequestParam(required = false ) Boolean active) {
+                                                             @RequestParam(required = false) Boolean active) {
         return ResponseEntity.ok(branchService.getAllBranch(pageIndex, pageSize, name, active));
     }
 
@@ -62,6 +63,17 @@ public class BranchController {
     @DeleteMapping("{id}")
     public ResponseEntity<Boolean> deleteBranchById(@PathVariable Long id) {
         return ResponseEntity.ok(branchService.deleteBranch(id));
+    }
+
+    @GetMapping("/product")
+    public ResponseEntity<ListProductBranchResponse> getListProductOfBranch(@RequestParam int pageIndex,
+                                                                            @RequestParam int pageSize,
+                                                                            @RequestParam(required = false, defaultValue = "") String name,
+                                                                            @RequestParam(required = false, defaultValue = "-1") int size,
+                                                                            @RequestParam(required = false, defaultValue = "-1") Long category,
+                                                                            @RequestParam Long branchId) {
+
+        return ResponseEntity.ok(branchService.getListProductOfBranch(pageIndex, pageSize, name, size, category, branchId));
     }
 
 }

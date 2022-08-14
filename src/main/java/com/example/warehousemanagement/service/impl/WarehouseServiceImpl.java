@@ -42,13 +42,19 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public Warehouse addNewWarehouse(AddWarehouseRequest addWarehouseRequest) {
-        Warehouse warehouse = new Warehouse();
-        warehouse.setQuantity(addWarehouseRequest.getQuantity());
-        warehouse.setProductId(addWarehouseRequest.getProductId());
-        Optional<PositionWarehouse> positionWarehouse = positionWarehouseRepository.findById(addWarehouseRequest.getPositionId());
-        if (positionWarehouse.isPresent()) {
-            positionWarehouse.get().setStatus(false);
-            positionWarehouseRepository.save(positionWarehouse.get());
+        Warehouse warehouse = warehouseRepository.findFirstByProductId(addWarehouseRequest.getProductId());
+        if (warehouse != null) {
+            warehouse.setQuantity(warehouse.getQuantity() + addWarehouseRequest.getQuantity());
+            return warehouseRepository.save(warehouse);
+        } else {
+            warehouse = new Warehouse();
+            warehouse.setQuantity(addWarehouseRequest.getQuantity());
+            warehouse.setProductId(addWarehouseRequest.getProductId());
+            Optional<PositionWarehouse> positionWarehouse = positionWarehouseRepository.findById(addWarehouseRequest.getPositionId());
+            if (positionWarehouse.isPresent()) {
+                positionWarehouse.get().setStatus(false);
+                positionWarehouseRepository.save(positionWarehouse.get());
+            }
         }
         return warehouseRepository.save(warehouse);
     }

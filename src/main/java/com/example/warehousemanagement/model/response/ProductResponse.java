@@ -1,17 +1,9 @@
-package com.example.warehousemanagement.entity;
+package com.example.warehousemanagement.model.response;
 
 import lombok.Data;
 
-import javax.persistence.*;
-
-@Entity
 @Data
-@Table(name = "product")
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
+public class ProductResponse {
     private Long idBranch;
 
     private Long idCategory;
@@ -28,6 +20,5 @@ public class Product {
 
     private String sku;
 
-    private Long position;
-
+    private String positionName;
 }

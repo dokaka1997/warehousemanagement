@@ -4,6 +4,7 @@ import com.example.warehousemanagement.entity.Product;
 import com.example.warehousemanagement.model.request.ExportProductRequest;
 import com.example.warehousemanagement.model.response.BestProductSellingResponse;
 import com.example.warehousemanagement.model.response.GetAllProductResponse;
+import com.example.warehousemanagement.model.response.ProductResponse;
 import com.example.warehousemanagement.service.OrderDetailService;
 import com.example.warehousemanagement.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class ProductController {
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getById(id));
     }
 

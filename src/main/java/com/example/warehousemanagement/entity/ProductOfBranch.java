@@ -18,6 +18,19 @@ public class ProductOfBranch {
 
     private int quantity;
 
-    private String position;
+    private Long position;
+
+    private Long idCategory;
+
+    private String name;
+
+    private String image;
+
+    private Double price;
+
+    private int size;
+
+    private String sku;
+
 
 }

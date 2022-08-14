@@ -705,7 +705,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"quantity\": 1,\r\n    \"idCategory\": 1,\r\n    \"name\": \"aa\",\r\n    \"image\": \"image\",\r\n    \"price\": 1000,\r\n    \"size\": 1111,\r\n    \"position\": 1\r\n}",
+					"raw": "{\r\n    \"productId\" : 1,\r\n    \"branchId\" : 1,\r\n    \"quantity\": 99,\r\n    \"idCategory\": 1,\r\n    \"name\": \"aa\",\r\n    \"image\": \"image\",\r\n    \"price\": 1000,\r\n    \"size\": 1111,\r\n    \"position\": 1,\r\n    \"isWarehouse\" : true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -930,6 +930,52 @@
 						"position",
 						"warehouse",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Product Of Branch",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/branch/product?pageIndex=0&pageSize=5&name=x&size=&category=1&branchId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"branch",
+						"product"
+					],
+					"query": [
+						{
+							"key": "pageIndex",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "5"
+						},
+						{
+							"key": "name",
+							"value": "x"
+						},
+						{
+							"key": "size",
+							"value": ""
+						},
+						{
+							"key": "category",
+							"value": "1"
+						},
+						{
+							"key": "branchId",
+							"value": "1"
+						}
 					]
 				}
 			},

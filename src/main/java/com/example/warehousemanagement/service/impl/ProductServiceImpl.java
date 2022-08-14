@@ -1,17 +1,13 @@
 package com.example.warehousemanagement.service.impl;
 
-import com.example.warehousemanagement.entity.Export;
-import com.example.warehousemanagement.entity.ExportDetail;
-import com.example.warehousemanagement.entity.Product;
-import com.example.warehousemanagement.entity.Warehouse;
+import com.example.warehousemanagement.entity.*;
 import com.example.warehousemanagement.model.request.ExportProductRequest;
 import com.example.warehousemanagement.model.request.ListProductExportRequest;
 import com.example.warehousemanagement.model.response.GetAllProductResponse;
-import com.example.warehousemanagement.repository.ExportDetailRepository;
-import com.example.warehousemanagement.repository.ExportRepository;
-import com.example.warehousemanagement.repository.ProductRepository;
-import com.example.warehousemanagement.repository.WarehouseRepository;
+import com.example.warehousemanagement.model.response.ProductResponse;
+import com.example.warehousemanagement.repository.*;
 import com.example.warehousemanagement.service.ProductService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -30,13 +26,21 @@ public class ProductServiceImpl implements ProductService {
 
     WarehouseRepository warehouseRepository;
 
+    ProductOfBranchRepository productOfBranchRepository;
+
+    ModelMapper mapper;
+
+
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, ExportRepository exportRepository,
-                              ExportDetailRepository exportDetailRepository, WarehouseRepository warehouseRepository) {
+                              ExportDetailRepository exportDetailRepository, WarehouseRepository warehouseRepository,
+                              ProductOfBranchRepository productOfBranchRepository, ModelMapper mapper) {
         this.productRepository = productRepository;
         this.exportRepository = exportRepository;
         this.exportDetailRepository = exportDetailRepository;
         this.warehouseRepository = warehouseRepository;
+        this.productOfBranchRepository = productOfBranchRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -66,9 +70,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getById(Long id) {
+    public ProductResponse getById(Long id) {
         Optional<Product> product = productRepository.findById(id);
-        return product.orElse(null);
+        if (!product.isPresent()) {
+            return null;
+        }
+        ProductResponse productResponse = mapper.map(product.get(), ProductResponse.class);
+        return productResponse;
     }
 
     @Override
@@ -99,6 +107,25 @@ public class ProductServiceImpl implements ProductService {
         export = exportRepository.save(export);
         for (ListProductExportRequest product : exportProductRequest.getProducts()) {
             ExportDetail exportDetail = new ExportDetail();
+
+
+            Optional<Product> optionalProduct = productRepository.findById(product.getProductId());
+
+            if (!optionalProduct.isPresent()) {
+                throw new Exception("Product not exist!!!");
+            }
+            Product product1 = optionalProduct.get();
+
+            ProductOfBranch productOfBranch = productOfBranchRepository.getFirstByProductIdAndBranchId(product.getProductId(), product.getBranchId());
+
+            if (productOfBranch != null) {
+                productOfBranch.setQuantity(productOfBranch.getQuantity() + product.getQuantity());
+            } else {
+                productOfBranch = mapper.map(product1, ProductOfBranch.class);
+
+            }
+            productOfBranch.setBranchId(product1.getIdBranch());
+            productOfBranchRepository.save(productOfBranch);
 
             Optional<Warehouse> optionalWarehouse = warehouseRepository.findById(product.getProductId());
             if (!optionalWarehouse.isPresent()) {

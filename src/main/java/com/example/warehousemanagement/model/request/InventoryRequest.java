@@ -1,17 +1,9 @@
-package com.example.warehousemanagement.entity;
+package com.example.warehousemanagement.model.request;
 
 import lombok.Data;
 
-import javax.persistence.*;
-
-@Entity
 @Data
-@Table(name = "inventory")
-public class Inventory {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
+public class InventoryRequest {
     private Long productId;
 
     private Long branchId;
@@ -28,4 +20,5 @@ public class Inventory {
 
     private int size;
 
+    private Boolean isWarehouse;
 }

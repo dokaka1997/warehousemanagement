@@ -1,6 +1,6 @@
 package com.example.warehousemanagement.model.response;
 
-import com.example.warehousemanagement.entity.Inventory;
+import com.example.warehousemanagement.entity.ProductOfBranch;
 import lombok.Data;
 
 import java.util.List;
@@ -9,6 +9,5 @@ import java.util.List;
 public class ListProductBranchResponse {
     private int total;
 
-    List<Inventory> products;
-
+    private List<ProductOfBranch> products;
 }

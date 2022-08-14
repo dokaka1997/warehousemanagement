@@ -1,14 +1,12 @@
 package com.example.warehousemanagement.service.impl;
 
-import com.example.warehousemanagement.entity.DeleteHistory;
-import com.example.warehousemanagement.entity.Inventory;
-import com.example.warehousemanagement.entity.PositionBranch;
+import com.example.warehousemanagement.entity.*;
 import com.example.warehousemanagement.model.request.DeleteProductInventoryRequest;
-import com.example.warehousemanagement.model.response.ListProductBranchResponse;
-import com.example.warehousemanagement.repository.DeleteHistoryRepository;
-import com.example.warehousemanagement.repository.InventoryRepository;
-import com.example.warehousemanagement.repository.PositionBranchRepository;
+import com.example.warehousemanagement.model.request.InventoryRequest;
+import com.example.warehousemanagement.model.response.ListProductInventoryResponse;
+import com.example.warehousemanagement.repository.*;
 import com.example.warehousemanagement.service.InventoryService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,17 +24,28 @@ public class InventoryServiceImpl implements InventoryService {
 
     PositionBranchRepository positionBranchRepository;
 
+    WarehouseRepository warehouseRepository;
+
+    ProductOfBranchRepository productOfBranchRepository;
+
+    ModelMapper mapper;
+
     @Autowired
     public InventoryServiceImpl(InventoryRepository inventoryRepository, DeleteHistoryRepository deleteHistoryRepository
-            , PositionBranchRepository positionBranchRepository) {
+            , PositionBranchRepository positionBranchRepository, WarehouseRepository warehouseRepository,
+                                ProductOfBranchRepository productOfBranchRepository, ModelMapper mapper) {
         this.inventoryRepository = inventoryRepository;
         this.deleteHistoryRepository = deleteHistoryRepository;
         this.positionBranchRepository = positionBranchRepository;
+        this.warehouseRepository = warehouseRepository;
+        this.productOfBranchRepository = productOfBranchRepository;
+        this.mapper = mapper;
     }
 
+
     @Override
-    public ListProductBranchResponse getListProductOfBranch(int pageIndex, int pageSize, Long branchId, String name, int size, Long category) {
-        ListProductBranchResponse listProductBranchResponse = new ListProductBranchResponse();
+    public ListProductInventoryResponse getListProductOfBranch(int pageIndex, int pageSize, Long branchId, String name, int size, Long category) {
+        ListProductInventoryResponse listProductBranchResponse = new ListProductInventoryResponse();
         List<Inventory> inventories;
         if (size == -1 && category == -1) {
             inventories = inventoryRepository.findAllByBranchIdAndNameContaining(branchId, name, PageRequest.of(pageIndex, pageSize));
@@ -56,14 +65,30 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Inventory addNewInventory(Inventory inventory) {
-        Optional<PositionBranch> optionalPositionBranch = positionBranchRepository.findById(inventory.getPosition());
-        if (optionalPositionBranch.isPresent()) {
-            PositionBranch positionBranch = optionalPositionBranch.get();
-            positionBranch.setStatus(false);
-            positionBranchRepository.save(positionBranch);
+    public Inventory addNewInventory(InventoryRequest inventoryRequest) {
+        Inventory inventory = mapper.map(inventoryRequest, Inventory.class);
+        Inventory inventory1 = inventoryRepository.getFirstByProductIdAndBranchId(inventoryRequest.getProductId(), inventoryRequest.getBranchId());
+        if (inventory1 != null) {
+            inventory1.setQuantity(inventory1.getQuantity() + inventoryRequest.getQuantity());
+        } else {
+            inventory1 = inventory;
         }
-        return inventoryRepository.save(inventory);
+
+        if (inventoryRequest.getIsWarehouse()) {
+            Warehouse warehouse = warehouseRepository.findFirstByProductId(inventoryRequest.getProductId());
+            if (warehouse != null) {
+                warehouse.setQuantity(warehouse.getQuantity() - inventoryRequest.getQuantity());
+                warehouseRepository.save(warehouse);
+            }
+        } else {
+            ProductOfBranch product = productOfBranchRepository.getFirstByProductIdAndBranchId(inventoryRequest.getProductId(), inventoryRequest.getBranchId());
+            if (product != null) {
+                product.setQuantity(product.getQuantity() - inventoryRequest.getQuantity());
+            }
+
+        }
+        return inventoryRepository.save(inventory1);
+
     }
 
     @Override

@@ -1,14 +1,15 @@
 package com.example.warehousemanagement.service.impl;
 
 import com.example.warehousemanagement.constant.RoleUser;
-import com.example.warehousemanagement.entity.Account;
-import com.example.warehousemanagement.entity.Branch;
-import com.example.warehousemanagement.entity.Order;
+import com.example.warehousemanagement.entity.*;
 import com.example.warehousemanagement.model.response.GetAllBranchResponse;
 import com.example.warehousemanagement.model.response.IncomeBranchResponse;
+import com.example.warehousemanagement.model.response.ListProductBranchResponse;
+import com.example.warehousemanagement.model.response.ListProductInventoryResponse;
 import com.example.warehousemanagement.repository.AccountRepository;
 import com.example.warehousemanagement.repository.BranchRepository;
 import com.example.warehousemanagement.repository.OrderRepository;
+import com.example.warehousemanagement.repository.ProductOfBranchRepository;
 import com.example.warehousemanagement.service.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -23,13 +24,16 @@ public class BranchServiceImpl implements BranchService {
     BranchRepository branchRepository;
     OrderRepository orderRepository;
     AccountRepository accountRepository;
+    ProductOfBranchRepository productOfBranchRepository;
 
 
     @Autowired
-    public BranchServiceImpl(BranchRepository branchRepository, OrderRepository orderRepository, AccountRepository accountRepository) {
+    public BranchServiceImpl(BranchRepository branchRepository, OrderRepository orderRepository,
+                             AccountRepository accountRepository, ProductOfBranchRepository productOfBranchRepository) {
         this.branchRepository = branchRepository;
         this.orderRepository = orderRepository;
         this.accountRepository = accountRepository;
+        this.productOfBranchRepository = productOfBranchRepository;
     }
 
 
@@ -143,6 +147,7 @@ public class BranchServiceImpl implements BranchService {
         }
     }
 
+
     public static Date addDays(Date date, int days) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
@@ -155,5 +160,26 @@ public class BranchServiceImpl implements BranchService {
         c.setTime(date);
         c.add(Calendar.DATE, -days);
         return new Date(c.getTimeInMillis());
+    }
+
+    @Override
+    public ListProductBranchResponse getListProductOfBranch(int pageIndex, int pageSize, String name, int size, Long category, Long branchId) {
+        ListProductBranchResponse listProductBranchResponse = new ListProductBranchResponse();
+        List<ProductOfBranch> product;
+        if (size == -1 && category == -1) {
+            product = productOfBranchRepository.findAllByBranchIdAndNameContaining(branchId, name, PageRequest.of(pageIndex, pageSize));
+        } else {
+
+            if (size == -1) {
+                product = productOfBranchRepository.findAllByBranchIdAndNameContainingAndIdCategory(branchId, name, category, PageRequest.of(pageIndex, pageSize));
+            } else if (category == -1) {
+                product = productOfBranchRepository.findAllByBranchIdAndNameContainingAndSize(branchId, name, size, PageRequest.of(pageIndex, pageSize));
+            } else {
+                product = productOfBranchRepository.findAllByBranchIdAndNameContainingAndIdCategoryAndSize(branchId, name, category, size, PageRequest.of(pageIndex, pageSize));
+            }
+        }
+        listProductBranchResponse.setProducts(product);
+        listProductBranchResponse.setTotal(product.size());
+        return listProductBranchResponse;
     }
 }

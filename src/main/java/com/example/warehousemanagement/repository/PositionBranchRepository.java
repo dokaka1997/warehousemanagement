@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PositionBranchRepository extends JpaRepository<PositionBranch, Long> {
     List<PositionBranch> findAllByBranchId(Long branchId);
+
 }
