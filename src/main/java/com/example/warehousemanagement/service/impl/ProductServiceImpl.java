@@ -30,21 +30,29 @@ public class ProductServiceImpl implements ProductService {
 
     ModelMapper mapper;
 
+    PositionWarehouseRepository positionWarehouseRepository;
+
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, ExportRepository exportRepository,
                               ExportDetailRepository exportDetailRepository, WarehouseRepository warehouseRepository,
-                              ProductOfBranchRepository productOfBranchRepository, ModelMapper mapper) {
+                              ProductOfBranchRepository productOfBranchRepository, ModelMapper mapper,
+                              PositionWarehouseRepository positionWarehouseRepository) {
         this.productRepository = productRepository;
         this.exportRepository = exportRepository;
         this.exportDetailRepository = exportDetailRepository;
         this.warehouseRepository = warehouseRepository;
         this.productOfBranchRepository = productOfBranchRepository;
         this.mapper = mapper;
+        this.positionWarehouseRepository = positionWarehouseRepository;
     }
 
     @Override
     public Product addNewProduct(Product product) {
+        if (productRepository.getFirstBySku(product.getSku()) != null) {
+            throw new RuntimeException("sku existed !!!");
+        }
+
         return productRepository.save(product);
     }
 
@@ -75,7 +83,10 @@ public class ProductServiceImpl implements ProductService {
         if (!product.isPresent()) {
             return null;
         }
+
         ProductResponse productResponse = mapper.map(product.get(), ProductResponse.class);
+        Optional<PositionWarehouse> warehouse = positionWarehouseRepository.findById(product.get().getPosition());
+        warehouse.ifPresent(positionWarehouse -> productResponse.setPositionName(positionWarehouse.getName()));
         return productResponse;
     }
 
@@ -127,11 +138,10 @@ public class ProductServiceImpl implements ProductService {
             productOfBranch.setBranchId(product1.getIdBranch());
             productOfBranchRepository.save(productOfBranch);
 
-            Optional<Warehouse> optionalWarehouse = warehouseRepository.findById(product.getProductId());
-            if (!optionalWarehouse.isPresent()) {
+            Warehouse warehouse = warehouseRepository.findFirstByProductId(product.getProductId());
+            if (warehouse == null) {
                 throw new Exception("Product not exist!!!");
             }
-            Warehouse warehouse = optionalWarehouse.get();
             int quantity = Math.min(product.getQuantity(), warehouse.getQuantity());
             warehouse.setQuantity(warehouse.getQuantity() - quantity);
             warehouseRepository.save(warehouse);

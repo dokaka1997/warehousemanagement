@@ -102,9 +102,9 @@ public class BranchServiceImpl implements BranchService {
             rs.add(branch);
         }
         if (active != null) {
-            response.setTotal(branchRepository.findAllByActiveIs(active).size());
+            response.setTotal(branchRepository.findAllByNameContainingAndActiveIs(name, active).size());
         } else {
-            response.setTotal(branches.size());
+            response.setTotal(branchRepository.findAllByNameContaining(name).size());
         }
         response.setBranches(rs);
         return response;

@@ -12,5 +12,9 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
 
     List<Branch> findAllByNameContaining(String name, Pageable pageable);
 
+    List<Branch> findAllByNameContainingAndActiveIs(String name, boolean active);
+
+    List<Branch> findAllByNameContaining(String name);
+
     List<Branch> findAllByActiveIs(boolean active);
 }

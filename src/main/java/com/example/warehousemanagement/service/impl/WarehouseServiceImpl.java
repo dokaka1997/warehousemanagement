@@ -52,7 +52,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             warehouse.setProductId(addWarehouseRequest.getProductId());
             Optional<PositionWarehouse> positionWarehouse = positionWarehouseRepository.findById(addWarehouseRequest.getPositionId());
             if (positionWarehouse.isPresent()) {
-                positionWarehouse.get().setStatus(false);
+                positionWarehouse.get().setStatus(true);
                 positionWarehouseRepository.save(positionWarehouse.get());
             }
         }
