@@ -1,10 +1,13 @@
 package com.example.warehousemanagement.service;
 
+import com.example.warehousemanagement.entity.Account;
 import com.example.warehousemanagement.model.request.LoginRequest;
 import com.example.warehousemanagement.model.request.RegisterRequest;
 import com.example.warehousemanagement.model.response.AccountResponse;
 import com.example.warehousemanagement.model.response.GetAllAccountResponse;
 import com.example.warehousemanagement.model.response.ListBranchAndWarehouseResponse;
+
+import java.util.List;
 
 public interface AccountService {
     AccountResponse login(LoginRequest loginRequest);
@@ -23,4 +26,7 @@ public interface AccountService {
                                  int pageIndex, int pageSize);
 
     ListBranchAndWarehouseResponse getBranchAndWarehouseById(Long id);
+
+    List<Account> getAllStaffByBranchId(Long id);
+
 }

@@ -204,4 +204,10 @@ public class AccountServiceImpl implements AccountService {
 
         return listBranchAndWarehouseResponse;
     }
+
+    @Override
+    public List<Account> getAllStaffByBranchId(Long id) {
+
+        return accountRepository.findAllByIdBranch(id);
+    }
 }

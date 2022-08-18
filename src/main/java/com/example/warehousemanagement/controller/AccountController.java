@@ -1,5 +1,6 @@
 package com.example.warehousemanagement.controller;
 
+import com.example.warehousemanagement.entity.Account;
 import com.example.warehousemanagement.model.request.LoginRequest;
 import com.example.warehousemanagement.model.request.RegisterRequest;
 import com.example.warehousemanagement.model.response.AccountResponse;
@@ -9,6 +10,8 @@ import com.example.warehousemanagement.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -43,7 +46,7 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteAcountById(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteAccountById(@PathVariable Long id) {
         return ResponseEntity.ok(accountService.deleteAccountById(id));
     }
 
@@ -63,6 +66,11 @@ public class AccountController {
     @GetMapping("/branch_warehouse/{id}")
     public ResponseEntity<ListBranchAndWarehouseResponse> getBranchAndWarehouseById(@PathVariable Long id) {
         return ResponseEntity.ok(accountService.getBranchAndWarehouseById(id));
+    }
+
+    @GetMapping("/staff/{id}")
+    public ResponseEntity<List<Account>> getAllStaffByBranchId(@PathVariable Long id) {
+        return ResponseEntity.ok(accountService.getAllStaffByBranchId(id));
     }
 
 

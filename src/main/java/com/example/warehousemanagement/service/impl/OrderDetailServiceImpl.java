@@ -1,9 +1,11 @@
 package com.example.warehousemanagement.service.impl;
 
+import com.example.warehousemanagement.entity.Order;
 import com.example.warehousemanagement.entity.OrderDetail;
 import com.example.warehousemanagement.entity.Product;
 import com.example.warehousemanagement.model.response.BestProductSellingResponse;
 import com.example.warehousemanagement.repository.OrderDetailRepository;
+import com.example.warehousemanagement.repository.OrderRepository;
 import com.example.warehousemanagement.repository.ProductRepository;
 import com.example.warehousemanagement.service.OrderDetailService;
 import org.modelmapper.ModelMapper;
@@ -18,15 +20,19 @@ import java.util.Optional;
 public class OrderDetailServiceImpl implements OrderDetailService {
     OrderDetailRepository orderDetailRepository;
 
+    OrderRepository orderRepository;
+
     ProductRepository productRepository;
 
     ModelMapper mapper;
 
     @Autowired
-    public OrderDetailServiceImpl(OrderDetailRepository orderDetailRepository, ProductRepository productRepository, ModelMapper mapper) {
+    public OrderDetailServiceImpl(OrderDetailRepository orderDetailRepository, OrderRepository orderRepository,
+                                  ProductRepository productRepository, ModelMapper mapper) {
         this.orderDetailRepository = orderDetailRepository;
         this.productRepository = productRepository;
         this.mapper = mapper;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -44,5 +50,15 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         }
 
         return bestProductSellingResponses;
+    }
+
+    @Override
+    public Double getTotalOrder() {
+        List<Order> orders = orderRepository.findAll();
+        Double total = 0D;
+        for (Order order: orders){
+            total += order.getTotalPrice();
+        }
+        return total;
     }
 }

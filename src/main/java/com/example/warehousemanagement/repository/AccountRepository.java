@@ -24,4 +24,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findAllByRole(int role);
 
     List<Account> findAllByRoleAndIdBranchNull(int role);
+
+
+    List<Account> findAllByIdBranch(Long branchId);
 }

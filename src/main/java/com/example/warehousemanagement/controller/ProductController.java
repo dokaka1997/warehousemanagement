@@ -70,5 +70,10 @@ public class ProductController {
     public ResponseEntity<ExportProductRequest> exportProduct(@RequestBody ExportProductRequest exportProductRequests) throws Exception {
         return ResponseEntity.ok(productService.addNewExport(exportProductRequests));
     }
+
+    @GetMapping("total")
+    public ResponseEntity<Double> getTotalOrder() {
+        return ResponseEntity.ok(orderDetailService.getTotalOrder());
+    }
     
 }

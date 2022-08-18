@@ -16,11 +16,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByNameContaining(String name, Pageable pageable);
 
+    List<Product> findAllByNameContaining(String name);
+
     List<Product> findAllByNameContainingAndSizeIs(String name, int size, Pageable pageable);
+
+    List<Product> findAllByNameContainingAndSizeIs(String name, int size);
 
     List<Product> findAllByNameContainingAndIdCategoryIs(String name, Long id, Pageable pageable);
 
+    List<Product> findAllByNameContainingAndIdCategoryIs(String name, Long id);
+
     List<Product> findAllByNameContainingAndIdCategoryIsAndSizeIs(String name, Long id, int size, Pageable pageable);
+
+    List<Product> findAllByNameContainingAndIdCategoryIsAndSizeIs(String name, Long id, int size);
 
     List<Product> findAllByWarehouseIdAndNameContaining(Long warehouse, String name, Pageable pageable);
 

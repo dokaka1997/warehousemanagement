@@ -30,7 +30,7 @@ public class InventoryController {
                                                                                @RequestParam(required = false, defaultValue = "") String name,
                                                                                @RequestParam(required = false, defaultValue = "-1") int size,
                                                                                @RequestParam(required = false, defaultValue = "-1") Long category,
-                                                                               @RequestParam Long branchId) {
+                                                                               @RequestParam(required = false, defaultValue = "0") Long branchId) {
 
         return ResponseEntity.ok(inventoryService.getListProductOfBranch(pageIndex, pageSize, branchId, name, size, category));
     }

@@ -2,6 +2,7 @@ package com.example.warehousemanagement.controller;
 
 import com.example.warehousemanagement.entity.Warehouse;
 import com.example.warehousemanagement.model.request.AddWarehouseRequest;
+import com.example.warehousemanagement.model.response.ImportWarehouseResponse;
 import com.example.warehousemanagement.model.response.ListProductWarehouseResponse;
 import com.example.warehousemanagement.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class WarehouseController {
     }
 
     @PostMapping
-    public ResponseEntity<Warehouse> addNewProduct(@RequestBody AddWarehouseRequest warehouse) {
+    public ResponseEntity<ImportWarehouseResponse> addNewProduct(@RequestBody AddWarehouseRequest warehouse) {
         return ResponseEntity.ok(warehouseService.addNewWarehouse(warehouse));
     }
 

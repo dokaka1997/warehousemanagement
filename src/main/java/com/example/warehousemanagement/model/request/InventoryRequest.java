@@ -6,7 +6,7 @@ import lombok.Data;
 public class InventoryRequest {
     private Long productId;
 
-    private Long branchId;
+    private Long branchId = 0L;
 
     private int quantity;
 

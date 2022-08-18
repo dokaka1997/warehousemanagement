@@ -4,6 +4,7 @@ import com.example.warehousemanagement.entity.PositionWarehouse;
 import com.example.warehousemanagement.entity.Product;
 import com.example.warehousemanagement.entity.Warehouse;
 import com.example.warehousemanagement.model.request.AddWarehouseRequest;
+import com.example.warehousemanagement.model.response.ImportWarehouseResponse;
 import com.example.warehousemanagement.model.response.ListProductWarehouseResponse;
 import com.example.warehousemanagement.model.response.WarehouseResponse;
 import com.example.warehousemanagement.repository.PositionWarehouseRepository;
@@ -41,22 +42,44 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 
     @Override
-    public Warehouse addNewWarehouse(AddWarehouseRequest addWarehouseRequest) {
+    public ImportWarehouseResponse addNewWarehouse(AddWarehouseRequest addWarehouseRequest) {
+        ImportWarehouseResponse importWarehouseResponse = new ImportWarehouseResponse();
         Warehouse warehouse = warehouseRepository.findFirstByProductId(addWarehouseRequest.getProductId());
+        PositionWarehouse positionWarehouse = positionWarehouseRepository.findFirstByWarehouseId(addWarehouseRequest.getProductId());
+        Long positionId = 0L;
         if (warehouse != null) {
             warehouse.setQuantity(warehouse.getQuantity() + addWarehouseRequest.getQuantity());
-            return warehouseRepository.save(warehouse);
+            warehouseRepository.save(warehouse);
+            importWarehouseResponse = mapper.map(warehouse, ImportWarehouseResponse.class);
+
+            if (positionWarehouse != null) {
+                importWarehouseResponse.setPositionId(positionWarehouse.getWarehouseId());
+            }
+            return importWarehouseResponse;
         } else {
             warehouse = new Warehouse();
             warehouse.setQuantity(addWarehouseRequest.getQuantity());
             warehouse.setProductId(addWarehouseRequest.getProductId());
-            Optional<PositionWarehouse> positionWarehouse = positionWarehouseRepository.findById(addWarehouseRequest.getPositionId());
-            if (positionWarehouse.isPresent()) {
-                positionWarehouse.get().setStatus(true);
-                positionWarehouseRepository.save(positionWarehouse.get());
+            Optional<PositionWarehouse> optionalPositionWarehouse = positionWarehouseRepository.findById(addWarehouseRequest.getPositionId());
+            if (optionalPositionWarehouse.isPresent()) {
+                optionalPositionWarehouse.get().setWarehouseId(addWarehouseRequest.getProductId());
+                optionalPositionWarehouse.get().setStatus(true);
+                positionId = optionalPositionWarehouse.get().getId();
+                positionWarehouseRepository.save(optionalPositionWarehouse.get());
             }
+
         }
-        return warehouseRepository.save(warehouse);
+        Optional<Product> optionalProduct = productRepository.findById(warehouse.getProductId());
+        if (!optionalProduct.isPresent()) {
+            throw new RuntimeException("Product not existed !!!!");
+        }
+        Product product = optionalProduct.get();
+        warehouse = warehouseRepository.save(warehouse);
+
+        product.setWarehouseId(warehouse.getId());
+        importWarehouseResponse = mapper.map(warehouse, ImportWarehouseResponse.class);
+        importWarehouseResponse.setPositionId(positionId);
+        return importWarehouseResponse;
     }
 
     @Override

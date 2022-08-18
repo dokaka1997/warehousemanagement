@@ -10,11 +10,20 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
     List<Inventory> findAllByBranchIdAndNameContaining(Long id, String name, Pageable pageable);
 
+    List<Inventory> findAllByBranchIdAndNameContaining(Long id, String name);
+
     List<Inventory> findAllByBranchIdAndNameContainingAndSize(Long id, String name, int size, Pageable pageable);
+
+    List<Inventory> findAllByBranchIdAndNameContainingAndSize(Long id, String name, int size);
 
     List<Inventory> findAllByBranchIdAndNameContainingAndIdCategory(Long id, String name, Long category, Pageable pageable);
 
+    List<Inventory> findAllByBranchIdAndNameContainingAndIdCategory(Long id, String name, Long category);
+
+
     List<Inventory> findAllByBranchIdAndNameContainingAndIdCategoryAndSize(Long id, String name, Long category, int size, Pageable pageable);
+
+    List<Inventory> findAllByBranchIdAndNameContainingAndIdCategoryAndSize(Long id, String name, Long category, int size);
 
     Inventory getFirstByProductIdAndBranchId(Long productId, Long branchId);
 }

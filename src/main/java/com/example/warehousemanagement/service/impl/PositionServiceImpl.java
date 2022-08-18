@@ -30,6 +30,6 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public List<PositionWarehouse> getPositionWarehouseById(Long warehouseId) {
-        return positionWarehouseRepository.findAllByWarehouseId(warehouseId);
+        return positionWarehouseRepository.findAll();
     }
 }

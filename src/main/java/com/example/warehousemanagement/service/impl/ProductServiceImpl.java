@@ -62,17 +62,24 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products;
         if (category == -1 && size == -1) {
             products = productRepository.findAllByNameContaining(name, PageRequest.of(pageIndex, pageSize));
+            getAllProductResponse.setTotal(productRepository.findAllByNameContaining(name).size());
+
         } else {
             if (category == -1 && size != -1) {
                 products = productRepository.findAllByNameContainingAndSizeIs(name, size, PageRequest.of(pageIndex, pageSize));
+                getAllProductResponse.setTotal(productRepository.findAllByNameContainingAndSizeIs(name, size).size());
+
             } else if (category != -1 && size == -1) {
                 products = productRepository.findAllByNameContainingAndIdCategoryIs(name, category, PageRequest.of(pageIndex, pageSize));
+                getAllProductResponse.setTotal(productRepository.findAllByNameContainingAndIdCategoryIs(name, category).size());
+
             } else {
                 products = productRepository.findAllByNameContainingAndIdCategoryIsAndSizeIs(name, category, size, PageRequest.of(pageIndex, pageSize));
+                getAllProductResponse.setTotal(productRepository.findAllByNameContainingAndIdCategoryIsAndSizeIs(name, category, size).size());
+
             }
         }
         getAllProductResponse.setProducts(products);
-        getAllProductResponse.setTotal(productRepository.findAll().size());
 
         return getAllProductResponse;
     }
@@ -118,10 +125,7 @@ public class ProductServiceImpl implements ProductService {
         export = exportRepository.save(export);
         for (ListProductExportRequest product : exportProductRequest.getProducts()) {
             ExportDetail exportDetail = new ExportDetail();
-
-
             Optional<Product> optionalProduct = productRepository.findById(product.getProductId());
-
             if (!optionalProduct.isPresent()) {
                 throw new Exception("Product not exist!!!");
             }
@@ -135,6 +139,8 @@ public class ProductServiceImpl implements ProductService {
                 productOfBranch = mapper.map(product1, ProductOfBranch.class);
 
             }
+            productOfBranch.setBranchId(product.getBranchId());
+            productOfBranch.setProductId(product.getProductId());
             productOfBranch.setBranchId(product1.getIdBranch());
             productOfBranchRepository.save(productOfBranch);
 

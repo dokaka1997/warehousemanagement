@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface OrderDetailService {
     List<BestProductSellingResponse> getTop10BestSellingProduct();
+
+    Double getTotalOrder();
 }

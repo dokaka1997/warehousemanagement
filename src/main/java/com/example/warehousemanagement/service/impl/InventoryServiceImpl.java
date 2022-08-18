@@ -49,18 +49,20 @@ public class InventoryServiceImpl implements InventoryService {
         List<Inventory> inventories;
         if (size == -1 && category == -1) {
             inventories = inventoryRepository.findAllByBranchIdAndNameContaining(branchId, name, PageRequest.of(pageIndex, pageSize));
+            listProductBranchResponse.setTotal(inventoryRepository.findAllByBranchIdAndNameContaining(branchId, name).size());
         } else {
-
             if (size == -1) {
                 inventories = inventoryRepository.findAllByBranchIdAndNameContainingAndIdCategory(branchId, name, category, PageRequest.of(pageIndex, pageSize));
+                listProductBranchResponse.setTotal(inventoryRepository.findAllByBranchIdAndNameContainingAndIdCategory(branchId, name, category).size());
             } else if (category == -1) {
                 inventories = inventoryRepository.findAllByBranchIdAndNameContainingAndSize(branchId, name, size, PageRequest.of(pageIndex, pageSize));
+                listProductBranchResponse.setTotal(inventoryRepository.findAllByBranchIdAndNameContainingAndSize(branchId, name, size).size());
             } else {
                 inventories = inventoryRepository.findAllByBranchIdAndNameContainingAndIdCategoryAndSize(branchId, name, category, size, PageRequest.of(pageIndex, pageSize));
+                listProductBranchResponse.setTotal(inventoryRepository.findAllByBranchIdAndNameContainingAndIdCategoryAndSize(branchId, name, category, size).size());
             }
         }
         listProductBranchResponse.setProducts(inventories);
-        listProductBranchResponse.setTotal(inventories.size());
         return listProductBranchResponse;
     }
 
