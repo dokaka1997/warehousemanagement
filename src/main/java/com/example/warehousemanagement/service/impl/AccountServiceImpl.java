@@ -195,7 +195,7 @@ public class AccountServiceImpl implements AccountService {
         }
 
         for (Branch branch : branches) {
-            if (branch.getId().equals(account.getWarehouseId()) && branch.getActive()) {
+            if (branch.getId().equals(account.getIdBranch()) && branch.getActive()) {
                 finalBranches.add(branch);
             }
         }
